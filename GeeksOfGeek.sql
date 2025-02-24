@@ -108,3 +108,5 @@ on student.roll_no=studentcourse.roll_no;
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 -- -- -- -- -- -- -- --  Full outer JOIN -- -- -- -- -- -- -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+-- On 25/02/2025 file push to github --
