@@ -42,6 +42,32 @@ select emp_no, first_name from employees;
 #################################################################################################
 ## Session-03 : Import SQL File , Select Command , SQL Data Types , Where Clause (Filter data) ##
 #################################################################################################
+
+-- create database employees; --
+
+## Downloading and adding 'employees.sql' database from github 
+-- -------------------------------------------------------- --
+-- LINK :- https://github.com/datacharmer/test_db
+-- 'test_db-master.zip' this file will be downloaded
+-- Unzip and we'll get a folder and inside that folder we'll get 'employees.sql'
+
+## To add database from sql file (employees.sql) 
+-- -------------------------------------------------------- --
+-- Open Command Prompt > Change Directory to folder 'test_db-master'
+-- cd F:\Automation Testing\Automation By Prachi Gupta (Hindi)\SQL Tutorial by Prachi\Databases\test_db-master   <ENTER>
+-- mysql -u root -p employees < employees.sql    <ENTER>
+-- # If ERROR comes :- ['mysql' is not recognized as an internal or external command, operable program or batch file]
+-- We'll nedd to set path of our MySQL Server 8.0\bin
+-- F:\Automation Testing\Automation By Prachi Gupta (Hindi)\SQL Tutorial by Prachi\Databases\test_db-master>set path=%PATH%;C:\Program Files\MySQL\MySQL Server 8.0\bin;   <ENTER> 
+-- Now the path will be set.
+-- F:\Automation Testing\Automation By Prachi Gupta (Hindi)\SQL Tutorial by Prachi\Databases\test_db-master>mysql -u root -p employees <employees.sql
+-- Will ask for password: root    <ENTER>
+-- All the tables will be imported into the database(employees). 
+-- Refresh the database after importing.
+
+
+use employees;
+select * from employees;
 -- we can use aliases, insted of emp_no & first_name such as ENO, FNAME --
 select emp_no, first_name from employees;
 select emp_no ENO, first_name FNAME from employees;
