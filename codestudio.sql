@@ -98,6 +98,29 @@ select * from titles where title in('Senior Staff', 'Senior Engineer');
 ##############################################################################################
                    ## Session-04 : ORDER BY clause & DISTINCT clause ##
 ##############################################################################################
+
+## First we need to import 'classicmodels' database.
+
+/* DATABASE NAME - classicmodels
+
+Q. How to import .sql file using 'MYSQL Command Line Client'?
+
+Link to download mysqlsampledatabase.sql file of classicmodels DB in SESSION 04
+
+https://github.com/prachicodestudio/MYSQL
+
+> Dnld zip file > unzip it
+
+> To use this DB in Workbench :-
+  - Open Mysql command line client > Enter password - root > We enter into MySql mode
+  - mysql>
+  - Type in front of mysql> in CLI: 'source' and give the '.sql' file path with file name
+     e.g. source F:\Automation Videos\Automation By Prachi Gupta (Hindi)\MySQL Tutorial\MYSQL-main\mysqlsampledatabase.sql
+  - Hit Enter > DB will get imported in Workbench
+  - Open Workbench > Refresh databases > will show 'classicmodels'
+  - Can also type in MySql CLI client - 'show databases' > will show 'classicmodels'
+ */       
+
 -- ORDER BY clause --
 ## for sorting the rows in the table ##
 
@@ -105,10 +128,12 @@ use classicmodels;
 select * from customers;
 select * from customers order by contactLastName;
 -- This will sort 'contactLastName' rows in alphabetical order -- 
--- By default will sort in Ascending Order --
+-- By default it will sort in Ascending Order --
 
 -- To sort in Descending Order --
 select * from customers order by contactLastName desc;
+
+select contactFirstName, contactLastName from customers order by contactFirstName asc, contactLastName desc;
 
 -- Can sort by multiple columns --
 select contactLastName LNAME, creditLimit CREDIT from customers order by contactLastName ASC, creditLimit DESC;
@@ -117,6 +142,7 @@ select contactLastName LNAME, creditLimit CREDIT from customers order by contact
 select * from orderdetails;
 select orderNumber, orderLineNumber, quantityOrdered * priceEach as sumOrderPrice from orderdetails order by  orderNumber;
 select orderNumber, orderLineNumber, quantityOrdered * priceEach as sumOrderPrice from orderdetails order by  sumOrderPrice;
+select orderNumber, orderLineNumber, quantityOrdered * priceEach as sumOrderPrice from orderdetails order by  sumOrderPrice desc;
 -- ========================================================================== --
 
 -- Q. How ORDER BY keyword will treat null values --
@@ -134,14 +160,17 @@ select firstName, reportsTo from employees order by reportsTo desc;
 
 -- Q. How DISTINCT keyword will treat null values --
 select * from customers;
-select state from customers;
+select state from customers; -- 122 rows
+select state from customers where state is not null; -- 49 rows
 
-select distinct state from customers;
--- DISTINCT keyword will display null value as once --
+select distinct state from customers; -- 19 rows
+-- DISTINCT keyword will display null value as one --
 -- [REMEMBER: null will always < not null values] --
 -- ==================================================================== --
-select city, state from customers where state is not null;
-select distinct city, state from customers where state is not null;
+select city from customers; -- 122 rows
+select city, state from customers; -- 122 rows
+select city, state from customers where state is not null; -- 49 rows
+select distinct city, state from customers where state is not null; -- 37 rows
 
 ##############################################################################################
                    ## Session-05 : OPERATORS - AND , OR , NOT IN ##
