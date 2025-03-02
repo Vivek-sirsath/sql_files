@@ -9,6 +9,7 @@ use employees;
    CREATE, ALTER, DROP, TRUNCATE, RENAME
 -  These commands changes the structure , definition of database.
 -  These commands are AUTO-COMMITTED means they saves the changes to the database permanently.
+-  These commands can not Rollback.
 
 2) DML (Data Manipulation Language) :-
    INSERT, UPDATE, DELETE
@@ -189,6 +190,10 @@ where state = 'CA' and country = 'USA';
 -- Here both the conditions should be true
 
 select customername, state, country from customers
+where state = 'NY' and country = 'France'; -- Blank output
+-- Here one of the conditions not true
+
+select customername, state, country from customers
 where state = 'NY' and country = 'USA';
 
 -- To get the customerName from state CA and NY and from country USA 
@@ -198,6 +203,7 @@ order by state;
 
 -- ==================================================================================
 # OR - Operator
+-- The OR operator displays a record if any of the conditions are TRUE.
 -- Here either one of the conditions should be true
 select customername, state, country from customers
 where state = 'CA' or country = 'USA';
@@ -209,14 +215,25 @@ select * from customers;
 select customername, country, creditLimit from customers
 where (country = 'USA' or country = 'France') and creditLimit > 100000;
 
+select customername, country, creditLimit from customers
+where (country = 'USA' or country = 'France') and creditLimit > 100000 order by country desc;
+
 -- ==================================================================================
-# OR - Operator
+# NOT - Operator
 -- The NOT operator is used in combination with other operators to give the opposite result
-select * from customers;
-select * from customers where customerName like 'A%';
-select * from customers where city = 'Madrid';
+-- NOT LIKE : Use generally for varchar (strings)
+-- NOT BETWEEN : Use generally for integers
+-- NOT IN : Use generally for varchar (strings)
+-- NOT GREATER THAN (>) 
+-- NOT LESS THAN (<)
+-- <> : To exclude the values. e.g. creditLimit <> 0.00
+
+select * from customers; -- 122 rows
+select * from customers where customerName like 'A%'; -- 16 rows
+select * from customers where city = 'Madrid';  -- 5 rows
 -- Negate above query to return opposite result
-select * from customers where customerName not like 'A%';
+select * from customers where customerName not like 'A%'; -- 106 rows
+select customerName, country, creditLimit from customers where creditLimit not between 50000 and 140000 and creditLimit <> 0.00 order by creditLimit desc;
 
 -- ==================================================================================
 # BETWEEN :- Operator
@@ -228,6 +245,7 @@ select * from customers where creditLimit between 70000 and 85000 order by credi
 -- ==================================================================================
 # IN :- Operator
 -- The IN operator allows you to specify multiple values in a WHERE clause.
+select * from customers;
 select customerName, country from customers where country in ('USA','France','Poland');
 select customerName, country from customers where country not in ('USA','France','Poland') order by country;
 
@@ -245,6 +263,7 @@ select customerName, creditLimit from customers where creditLimit < 20000;
 ##############################################################################################
 use testDB_codestudio;
 # CREATE command (DDL):-
+-- Use to create database objects. Like Database, Tables, Views, Triggers.
 
 create database testDB_codestudio;
 
@@ -278,7 +297,7 @@ insert into student (Name, dob, age, remarks) values ("Vivek", '1987-11-08', 35,
 -- =================================================================================
 
 # ALTER command (DDL):-
--- To modify column in table
+-- Used for modifying and renaming elements of an existing database table. Add new column, Drop column, Modify existing column, Rename column
 -- Change the dataType of 'Remarks' column from Text dataType to Varchar dataType
 
 alter table student modify Remarks VARCHAR(100);
@@ -311,7 +330,8 @@ alter table student modify CreatedAt timestamp default current_timestamp after R
 -- ====================================================================================
 
 -- We can also use RENAME command to rename the column name instead of CHANGE
--- alter table student RENAME column DateOfBirth to DOB;
+-- alter table student RENAME COLUMN DateOfBirth TO DOB;
+-- alter table student RENAME COLUMN DOB TO DateOfBirth;
 -- =====================================================================================
 
 -- Modify multiple columns (Change DataTypes) at the same time
