@@ -226,6 +226,7 @@ where (country = 'USA' or country = 'France') and creditLimit > 100000 order by 
 -- NOT IN : Use generally for varchar (strings)
 -- NOT GREATER THAN (>) 
 -- NOT LESS THAN (<)
+-- not equal to (<>)
 -- <> : To exclude the values. e.g. creditLimit <> 0.00
 
 select * from customers; -- 122 rows
@@ -413,11 +414,15 @@ select concat(firstName,"  ",lastName) from employees;
 -- ======================================================================
 
 # INSTR() :- Returns position of the occurence of a string. e.g. 5
+-- This is not case sensitive.
 select instr("abcdefg", "efg"); -- > 5 (position of e on 5th number)
 select instr("abcdefg", "abc"); -- > 1
+select instr("abcdefg", "B"); -- > 2
+select instr("abcdefg", "c"); -- > 3
+select instr("abcdefg", "def"); -- > 4
 
 select * from products;
-select * from products where instr(productLine, "Cars") > 0;
+select * from products where instr(productLine, "Cars") > 0; -- cars string should be present at > 0 index
 -- ======================================================================
 
 select length("Vivek");
@@ -425,9 +430,19 @@ use classicmodels;
 select * from classicmodels.employees;
 select firstName, length(firstname) as LengthOfString from employees;
 -- ======================================================================
+# LEFT() :- Get specified number of left most characters from a string starting index 1 from left
+select left ("MySQL is easy" , 5);
+select left ("MySQL is easy" , 15);
+
+# RIGHT() :- Get specified number of right most characters from a string starting index 1 from right
+select right ("MySQL is easy" , 4);
+select right ("MySQL is easy" , 15);
+select left ("MySQL is easy" , 9);
+-- ======================================================================
 
 select replace("Red Hat", "Red","Green");
 select replace("Red Hat Red", "Red","Green");
+select replace("SQL Tutorial", "SQL", "Java");
 -- ======================================================================
 -- SYNTAX :- 
 select substring("String", start, length);
@@ -447,12 +462,12 @@ use classicmodels;
 
 
 -- ABS() function : Returns the absolute value of a number
-select abs(234.56);   -- 234.56
+select abs(-234.56);   -- 234.56
 select abs(50.60);
 select abs(70);   -- 70
 -- ===============================================================================================
 
--- MOD() function : Returns the reminder of a number divided by another
+-- MOD() function : Returns the reminder of a number divided by another (MOD(x,y))
 select mod(13,5); -- 3 (13 divided by 5) 
 select 13 % 5;    -- 3
 select 23 % 2;    -- 1
@@ -500,6 +515,7 @@ use classicmodels;
 select * from orderdetails;
 
 -- sum() function : gives the summation of given expression. Returns sum of all values in set.
+
 select sum(quantityOrdered) from orderdetails;
 select * from orderdetails where orderNumber = 10102;
 select sum(quantityOrdered*priceEach) as totalOrder from orderdetails where orderNumber = 10102;
@@ -521,8 +537,8 @@ select count(*) from products where productCode = "S10_2016";
 
 
 select * from customers;
-select count(*) from customers where country = "Spain";
-select * from customers where country = "Spain";
+select count(*) from customers where country = "Spain"; -- 7
+select * from customers where country = "Spain"; -- 7
 select count(*) from customers where city = "NYC";
 -- ===============================================================================================
 
@@ -553,8 +569,11 @@ select datediff('2023-10-11','2023-10-11');   -- 0
 select datediff('2023-10-11','2023-10-10');   -- 1
 select datediff('2023-10-11','2023-10-15');   -- (-4)
 select datediff('2023-10-15','2023-10-11');   -- 4
-select datediff('2024-01-07','2023-12-23');   -- 15
+select datediff('2025-03-03','1987-11-08');   -- 13630
+select datediff('2025-03-03','1992-02-08');   -- 12077
+select datediff('2025-03-03','2018-09-18');   -- 2358
 
+use classicmodels;
 select * from orders;
 select orderNumber, datediff(requireddate, shippeddate) as daysLeft from orders where status = "Shipped"; 
 select orderNumber, datediff(requireddate, shippeddate) as daysLeft from orders where status = "Shipped" order by daysLeft desc;
@@ -633,7 +652,7 @@ use project_hr;
 -- GROUP BY clause return unique records from the columns.
 -- It is used to collect the data from multiple columns and group by one or more columns.
 -- The selected column of the GROUP BY clause must be the part of SELECT clause
--- GROUP BY clause Will always used with aggregate functions.
+-- GROUP BY clause should always used with aggregate functions such as SUM, AVG, MAX, MIN, COUNT.
 
 select * from employees;
 
@@ -656,22 +675,33 @@ select * from employees;
 /*
 Filter records based on condition
 --------------------------------
-HAVING clause - Comes after GROUP BY clause 
 WHERE clause - comes before GROUP BY clause
+HAVING clause - Comes after GROUP BY clause 
 
-Order BY clause - use to sort the results
+Though, the function of WHERE and HAVING clause looks simillar, but there is a difference.
+If we wish to filter the records BEFORE grouping, we use WHERE clause.
+If we wish to filter the records AFTER grouping, we use HAVING clause.
+
+GROUP BY clause - use to group the records.
+ORDER BY clause - use to sort the results.
 -- The selected column of the GROUP BY clause must be the part of SELECT clause
 */
 
 -- get the no of records as per job_id
+select job_id from employees group by job_id;
 select job_id, count(*) from employees group by job_id;
 
 select job_id, count(*) as NumberOfEmployees from employees group by job_id having count(*) > 3;
+select job_id, count(*) as NumberOfEmployees from employees group by job_id having NumberOfEmployees < 4;
 
 -- Return the sum of salary from each department
+select * from employees;
+
+select first_name, last_name from employees where salary > 15000;
 select department_id, sum(salary) from employees group by department_id;
 
-select department_id, first_name, last_name, sum(salary) from employees group by department_id having sum(salary)>40000;
+select department_id, sum(salary) from employees group by department_id having sum(salary)>20000;
+select department_id, sum(salary) from employees where department_id <> 6 group by department_id having sum(salary)>20000;
 select department_id, first_name, last_name, salary, sum(salary) from employees group by department_id having sum(salary)>40000;
 # Here salary is individuals salary, and sum(salary) is Total salary of each department.
 
