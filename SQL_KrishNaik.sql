@@ -200,8 +200,66 @@ select * from student_info;
 -- To drop view -- 
 drop view student_info;
 
--- ================================================ --
--- =================== QUESTIONS ================== --
+
+################################################################################################
+					            ##  9. Stored Procedure  ##
+################################################################################################
+use SQL_KrishNaik;
+select * from student_info;
+
+# Stored Procedures (Without Parameters) :-
+-- -------------------------------------
+/*
+-- In left side navigator, right click on 'Stored Procedures' > Select 'Create Stored Procedures'
+-- A new tab will open 'new_procedure - Routine', in which write below code -
+-- [Whichever query we want to execute, write between BEGIN ... END]
+-- Click on Apply > Again Apply > Finish
+
+CREATE PROCEDURE `name_of_procedure` ()
+BEGIN
+select * from student; 
+END
+
+*/
+call get_student_data;
+-- This command is stored in 'Stored Procedures' folder.
+
+
+# Stored Procedures (With Parameters)(Using Input Parameters - IN) :-
+-- ---------------------------------------------------------------
+select * from student;
+select * from student where age=31;
+
+/*
+-- In left side navigator, right click on 'Stored Procedures' > Select 'Create Stored Procedures'
+-- A new tab will open 'new_procedure - Routine', in which write below code -
+-- [Whichever query we want to execute, write between BEGIN ... END]
+-- Click on Apply > Again Apply > Finish
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sortByAge`(IN age int)
+BEGIN
+select * from student where student.age=age; -- age is a parameter here
+END
+*/
+
+call sortByAge(35); -- Try 31,16
+
+# Stored Procedures (With Parameters)(Using Output Parameters - OUT) :-
+-- -----------------------------------------------------------------
+
+/*
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudentInfoByOutParameter`(OUT records int)
+BEGIN
+select count(*) into records from student where student.age=16; -- 31,35
+END
+*/
+
+-- Save this stored procedure in 'Stored Procedure'
+call getStudentInfoByOutParameter(@records);
+select @records as TotalRecords; -- 1 (age=31)
+
+-- =========================================================================================== --
+-- ====================================== QUESTIONS ========================================== --
 
 -- Q. Write SQL query to print all the details of employees
 -- whose salary between 40000 to 70000
