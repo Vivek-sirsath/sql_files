@@ -1,6 +1,67 @@
 use employees;
 -- Employees database is already added database, which is nothing but MySQL official website's practice database
 
+/*
+Ref: https://www.w3schools.com/sql/sql_datatypes.asp
+
+SQL DATATYPES :-
+-------------
+
+String Data Types :-
+-----------------
+Data type	     Description
+CHAR(size)	     A FIXED length string (can contain letters, numbers, and special characters). The size parameter specifies the column length in characters - can be from 0 to 255. Default is 1
+VARCHAR(size)	 A VARIABLE length string (can contain letters, numbers, and special characters). The size parameter specifies the maximum string length in characters - can be from 0 to 65535
+BINARY(size)	 Equal to CHAR(), but stores binary byte strings. The size parameter specifies the column length in bytes. Default is 1
+VARBINARY(size)  Equal to VARCHAR(), but stores binary byte strings. The size parameter specifies the maximum column length in bytes.
+TINYBLOB	     For BLOBs (Binary Large Objects). Max length: 255 bytes
+TINYTEXT	     Holds a string with a maximum length of 255 characters
+TEXT(size)	     Holds a string with a maximum length of 65,535 bytes
+BLOB(size)	     For BLOBs (Binary Large Objects). Holds up to 65,535 bytes of data
+MEDIUMTEXT	     Holds a string with a maximum length of 16,777,215 characters
+MEDIUMBLOB	     For BLOBs (Binary Large Objects). Holds up to 16,777,215 bytes of data
+LONGTEXT	     Holds a string with a maximum length of 4,294,967,295 characters
+LONGBLOB	     For BLOBs (Binary Large Objects). Holds up to 4,294,967,295 bytes of data
+ENUM(val1, val2, val3, ...)	A string object that can have only one value, chosen from a list of possible values. You can list up to 65535 values in an ENUM list. If a value is inserted that is not in the list, a blank value will be inserted. The values are sorted in the order you enter them
+SET(val1, val2, val3, ...)	A string object that can have 0 or more values, chosen from a list of possible values. You can list up to 64 values in a SET list
+
+
+Numeric Data Types :-
+------------------
+Data type	     Description
+BIT(size)	     A bit-value type. The number of bits per value is specified in size. The size parameter can hold a value from 1 to 64. The default value for size is 1.
+TINYINT(size)	 A very small integer. Signed range is from -128 to 127. Unsigned range is from 0 to 255. The size parameter specifies the maximum display width (which is 255)
+BOOL	         Zero is considered as false, nonzero values are considered as true.
+BOOLEAN	Equal to BOOL
+SMALLINT(size)	 A small integer. Signed range is from -32768 to 32767. Unsigned range is from 0 to 65535. The size parameter specifies the maximum display width (which is 255)
+MEDIUMINT(size)  A medium integer. Signed range is from -8388608 to 8388607. Unsigned range is from 0 to 16777215. The size parameter specifies the maximum display width (which is 255)
+INT(size)	     A medium integer. Signed range is from -2147483648 to 2147483647. Unsigned range is from 0 to 4294967295. The size parameter specifies the maximum display width (which is 255)
+INTEGER(size)	 Equal to INT(size)
+BIGINT(size)	 A large integer. Signed range is from -9223372036854775808 to 9223372036854775807. Unsigned range is from 0 to 18446744073709551615. The size parameter specifies the maximum display width (which is 255)
+FLOAT(size, d)	 A floating point number. The total number of digits is specified in size. The number of digits after the decimal point is specified in the d parameter. This syntax is deprecated in MySQL 8.0.17, and it will be removed in future MySQL versions
+FLOAT(p)	     A floating point number. MySQL uses the p value to determine whether to use FLOAT or DOUBLE for the resulting data type. If p is from 0 to 24, the data type becomes FLOAT(). If p is from 25 to 53, the data type becomes DOUBLE()
+DOUBLE(size, d)	 A normal-size floating point number. The total number of digits is specified in size. The number of digits after the decimal point is specified in the d parameter
+DOUBLE PRECISION(size, d)	 
+DECIMAL(size, d) An exact fixed-point number. The total number of digits is specified in size. The number of digits after the decimal point is specified in the d parameter. The maximum number for size is 65. The maximum number for d is 30. The default value for size is 10. The default value for d is 0.
+DEC(size, d)	 Equal to DECIMAL(size,d)
+
+[Note: All the numeric data types may have an extra option: UNSIGNED or ZEROFILL. 
+If you add the UNSIGNED option, MySQL disallows negative values for the column. 
+If you add the ZEROFILL option, MySQL automatically also adds the UNSIGNED attribute to the column.]
+
+Date and Time Data Types :-
+------------------------
+Data type	     Description
+DATE	         A date. Format: YYYY-MM-DD. The supported range is from '1000-01-01' to '9999-12-31'
+DATETIME(fsp)	 A date and time combination. Format: YYYY-MM-DD hh:mm:ss. The supported range is from '1000-01-01 00:00:00' to '9999-12-31 23:59:59'. Adding DEFAULT and ON UPDATE in the column definition to get automatic initialization and updating to the current date and time
+TIMESTAMP(fsp)	 A timestamp. TIMESTAMP values are stored as the number of seconds since the Unix epoch ('1970-01-01 00:00:00' UTC). Format: YYYY-MM-DD hh:mm:ss. The supported range is from '1970-01-01 00:00:01' UTC to '2038-01-09 03:14:07' UTC. Automatic initialization and updating to the current date and time can be specified using DEFAULT CURRENT_TIMESTAMP and ON UPDATE CURRENT_TIMESTAMP in the column definition
+TIME(fsp)	     A time. Format: hh:mm:ss. The supported range is from '-838:59:59' to '838:59:59'
+
+YEAR	         A year in four-digit format. Values allowed in four-digit format: 1901 to 2155, and 0000.
+                 MySQL 8.0 does not support year in two-digit format.
+
+*/
+
 #################################################################################################
                                  ## Session-02 : SQL Cmmands ##
 #################################################################################################
@@ -714,6 +775,7 @@ select * from employees where first_name = 'Steven' and last_name = 'King';
 -- ===============================================================================================
                            	-- ### -- ORDER BY clause -- ### --
 -- ===============================================================================================
+use project_hr;
 select * from employees order by salary desc;
 select department_id, sum(salary) from employees where department_id <> 6 group by department_id having sum(salary) > 20000 order by sum(salary);
 
@@ -724,6 +786,7 @@ select department_id, sum(salary) from employees where department_id <> 6 group 
 /*
 1) UNION - Used to combile two or more sets from multiple SELECT statements in to a single result set.
          - Removes duplicates and keep the distinct values.
+         - Union operator gives distint values
       
 2) UNION ALL - Used to combine two or more sets of SELECT statements in single set.
              - Allow/add the duplicate values, it will return duplicate values records also
@@ -747,6 +810,9 @@ id int
 
 insert into t1 values (1),(2),(3);
 insert into t2 values (2),(3),(4);
+
+select * from t1;
+select * from t2;
 
 -- UNION --
 select * from t1
@@ -786,6 +852,10 @@ Rules to use UNION operator:
 */
 
 select concat(firstname, " ", lastname) as FullName from employees
+union
+select concat(contactFirstName, " ", contactLastName) from customers;
+
+select concat(firstname, " ", lastname) as FullName from employees
 union all
 select concat(contactFirstName, " ", contactLastName) from customers;
 
@@ -797,16 +867,19 @@ select concat(contactFirstName, " ", contactLastName) from customers;
 use testdb_codestudio;
 
 select * from t1;
--- intersect
+# intersect
 select * from t2;
 
--- [NOTE: MySQL Workbench Do NOT support INTERSECT command]
+/* [NOTE: MySQL Workbench Do NOT support INTERSECT command]
+
 -- Open 'MySQL 8.0 Command Line Client' [BUT its not working]
 -- TYPE : select * from t1 intersect select * from t2;
+-- Error: ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version 
+   for the right syntax to use near 'select * from t2' at line 1
 
 -- EXCEPT (a.k.a. MINUS) operator - 
--- t1 EXCEPT t2 >>>>>> means >>>>> t1 MINUS t2
-
+-- t1 EXCEPT t2  ( i.e. t1 MINUS t2)
+*/
 #########################################################################################################################################
 				##  Session-11 : JOINS : INNER JOIN, LEFT JOIN, RIGHT JOIN ,CROSS JOIN, FULL JOIN  ##
 #########################################################################################################################################
@@ -820,7 +893,8 @@ The tables are inter-related using primary and foreign key.
 -- ===============================================================================================
                            	-- ### -- INNER Join -- ### --
 -- ===============================================================================================
--- It retrieves matching records.
+-- It returns common / matching records.
+-- Tables are mutually related using Primary Key and Foreign Key
 -- create database joins_codestudio;
 use joins_codestudio;
 
@@ -836,7 +910,45 @@ insert into t2 values (11),(12),(13),(15);
 
 select * from t1;
 select * from t2;
+
 select * from t1 inner join t2 on t1.num = t2.num;
+
+/*
+1) Inner Join :-
+
+select * from t1 inner join t2 on t1.num = t2.num;
++------+------+
+| num  | num  |
++------+------+
+|   11 |   11 |
+|   12 |   12 |
++------+------+
+
+2) Left Join :-
+
+select * from t1 left join t2 on t1.num = t2.num;
++------+------+
+| num  | num  |
++------+------+
+|   11 |   11 |
+|   12 |   12 |
+|   10 | NULL |
+|   14 | NULL |
++------+------+
+
+2) Right Join :-
+
+select * from t1 right join t2 on t1.num = t2.num;
++------+------+
+| num  | num  |
++------+------+
+|   11 |   11 |
+|   12 |   12 |
+| NULL |   13 |
+| NULL |   15 |
++------+------+
+
+*/
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
 use project_hr;
@@ -849,15 +961,40 @@ select * from employees inner join departments on employees.department_id = depa
 use classicmodels;
 select * from products;
 select * from productlines;
-
+desc products;
+desc productlines;
 select productCode, productName, textDescription from products inner join productlines on products.productLine = productlines.productLine;
+-- -------------------------------------------------------------------------------------------------------------------------------------- --
+# We can also write the above query by using 'USING' keyword insted of 'ON' keyword. (Query becomes Short)
+# Can use if the field is common in both the tables.
+select productCode, productName, textDescription from products inner join productLines using (productLine);
 
 -- ===============================================================================================
                            	-- ### -- LEFT Join / LEFT OUTER Join -- ### --
 -- ===============================================================================================
--- Returns matched records + Unmatched records (all records) from left table
+-- Returns matched records from both tables + Unmatched records (all records) from left table
+-- Tables are mutually related using Primary Key and Foreign Key
 use joins_codestudio;
+
+-- t1 = 10,11,12,14
+-- t2 = 11,12,13,15
+
 select * from t1 left join t2 on t1.num = t2.num;
+
+/*
+2) Left Join :-
+
+select * from t1 left join t2 on t1.num = t2.num;
++------+------+
+| num  | num  |
++------+------+
+|   11 |   11 |
+|   12 |   12 |
+|   10 | NULL |
+|   14 | NULL |
++------+------+
+
+*/
 
 -- Retrieve the records of customer who has no any order (orderNumber should have NULL values) --
 use classicmodels;
@@ -880,11 +1017,34 @@ Error Code: 1052. Column 'customerNumber' in field list is ambiguous
 -- Returns matched records + Unmatched records (all records) from right table
 
 use joins_codestudio;
+
+-- t1 = 10,11,12,14
+-- t2 = 11,12,13,15
+
 select * from t1 right join t2 on t1.num = t2.num;
+
+/*
+2) Right Join :-
+
+select * from t1 right join t2 on t1.num = t2.num;
++------+------+
+| num  | num  |
++------+------+
+|   11 |   11 |
+|   12 |   12 |
+| NULL |   13 |
+| NULL |   15 |
++------+------+
+
+*/
 
 -- get the record of employees who are not the sales representative of any customer --
 use classicmodels;
-select employeeNumber, customerNumber from customers right join employees on salesRepEmployeeNumber = employeeNumber;
+
+select * from customers;
+select * from employees;
+
+select employeeNumber, customerNumber from customers right join employees on salesRepEmployeeNumber = employeeNumber;	
 select employeeNumber, customerNumber from customers right join employees on salesRepEmployeeNumber = employeeNumber where customerNumber is null;
 
 -- ===============================================================================================
@@ -892,7 +1052,31 @@ select employeeNumber, customerNumber from customers right join employees on sal
 -- ===============================================================================================
 -- It is used to generate a paired combination of each row of the first table with each row of the second table
 use joins_codestudio;
+
+-- t1 = 10,11,12,14
+-- t2 = 11,12,13,15
+
 select * from t1 cross join t2;
+-- ---------------------------------------------------------------------------------------------- --
+-- It is used to generate a paired combination of each row of the first table with each row of the second table
+
+create table table1 (
+col int
+);
+
+create table table2 (
+col char
+);
+
+-- DROP table table2;
+
+insert into table1 values (1),(2),(3);
+select * from table1;
+
+insert into table2 values ('a'),('b'),('c');
+select * from table2;
+
+select * from table1 cross join table2;
 
 
 -- ===============================================================================================
@@ -909,7 +1093,7 @@ select * from t1 cross join t2;
 /*
 # Single row sub-query (Subquery to return single row)
 -- In this, we use (<=, >=, !=) operators.
-# Multi row sub-query (Subquery to return multiple row)
+# Multi row sub-query (Subquery to return multiple rows)
 -- In this, we use (IN, ANY, ALL) operators.
 
 Subquery is a nested query within another query such as SELECT, INSERT, UPDATE or DELETE.
@@ -943,15 +1127,19 @@ use project_hr;
 select * from employees;
 
 select max(salary) from employees;
+select * from employees where salary = (select max(salary) from employees);
+
 select employee_id, first_name, last_name, salary from employees where salary = (select max(salary) from employees);
 
-select salary from employees order by salary desc;
+select first_name, salary from employees order by salary desc;
 
 -- Q. 2nd highest salary from employees table
 select max(salary) from employees where salary < (select max(salary) from employees);
 
 -- Q. 3rd highest salary from employees table
 select max(salary) from employees where salary < (select max(salary) from employees where salary < (select max(salary) from employees));
+
+select salary from employees order by salary desc limit 3;
 
 -- Q. Top 5 salary from employees table
 select distinct salary from employees order by salary desc limit 5;
@@ -976,8 +1164,6 @@ select * from departments;
 
 select  first_name, last_name, department_id, (select department_name from departments where employees.department_id = departments.department_id) departmentName from employees;
 -- ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- -- 
-
-
 
 
 #########################################################################################################################################
@@ -1005,11 +1191,15 @@ MARKS int
 );
 
 desc student;
-insert into student values (1, 'Ishita', 'Shirsath', 99);
+insert into student(ROLL, FNAME, LNAME, MARKS) values (1, 'Ishita', 'Shirsath', 99);
+insert into student(ROLL, FNAME, LNAME, MARKS) values (2, 'Deepika', 'Shirsath', 92);
 select * from student;
-insert into student values(2, null, 'Chavan', 80);
+insert into student(ROLL, FNAME, LNAME, MARKS) values(2, null, 'Chavan', 80);
 -- [Error Code: 1048. Column 'FNAME' cannot be null]
-	
+
+# We can remove 'not null' constraint if we want.
+alter table student modify column LNAME varchar (20);
+
 drop table student;
 show tables; -- student should not be present
 
@@ -1018,7 +1208,11 @@ show tables; -- student should not be present
 -- ============================================================================================== --
 -- This constraint ensures that all the values in the column should be unique. 
 -- Duplicates not allowed of other dataTypes. 
--- Null duplicates allowed, 
+-- Duplicate Null values allowed.
+-- Unique constraints can be applied on Column Level as well as Table Level
+
+# Column Level 
+--------------
  
 create table student(
 ROLL int unique,
@@ -1028,6 +1222,24 @@ MARKS int
 );
 
 desc student;
+drop table student;
+
+/*
+# Table Level 
+-------------- 
+create table student(
+ROLL int,
+FNAME varchar(20),
+LNAME varchar(20),
+MARKS int,
+unique(FNAME , LNAME)
+);
+*/
+
+desc student;
+
+insert into student values (1,'Seeta','Patil',85);
+insert into student values (2,'Seeta','Mahajan',45);
 select * from student;
 
 insert into student values (1,'Seeta','Patil',85);
@@ -1048,7 +1260,8 @@ drop table student;
  -- ============================================================================================= --
                               	-- ### -- PRIMARY KEY CONSTRAINT -- ### --
 -- ============================================================================================== --
--- PRIMARY KEY constraint is used to identify each record uniquely. 
+-- PRIMARY KEY constraint is used to identify each record uniquely.
+-- It is the combination of UNIQUE + NOT NULL 
 -- If any column that contains Primary Key, then that column cannot be null or empty.
 -- Duplicates not allowed in column containing primary key. 
 
@@ -1079,6 +1292,7 @@ drop table student;
 e.g. 
     Consider a student table having below columns
     Roll | Fname | Lname | Mobile | Marks
+    
 # In this table (Roll and Mobile) of student should be unique.
   Combination of both will be unique
   Mobile no may be duplicate here, but combination is unique.
@@ -1102,10 +1316,13 @@ insert into student values (1,'Vivek','Shirsath','9988774466',84);
 insert into student values (2,'Vivek','Shirsath','9988774455',84);
 insert into student values (2,'Vivek','Shirsath','9988774455',84);
 -- 4th record show error, same combination duplicated
--- Error Code: 1062. Duplicate entry '2-9988774455' for key 'PRIMARY'	
+-- Error Code: 1062. Duplicate entry '2-9988774455' for key 'PRIMARY'
+
+-- Here ROLL and MOBILE combination, both are assigned by PRIMARY KEY
+-- If the duplicate entry for the combination happens then, it will show error.
 
 -- ============================================================================================= --
-							  -- ### -- FOREIGN KEY CONSTRAINT -- ### --
+						  -- ### -- FOREIGN KEY CONSTRAINT -- ### --
 -- ============================================================================================= --
 # It is used to link two tables together.
 # FOREIGN KEY of second table refers to the same column having PRIMARY KEY of first table
@@ -1148,12 +1365,18 @@ insert into employee values(5,'Thomas', 7);
 insert into employee values(6,'Steve', null);
 -- Ans:-   YES
 
+-- Q. Can we delete department from department table?
+delete from department where dept_id=3;
+select * from department;
+-- No, we cann't delete, first we've to delete employee before deleting department.
+
 -- Values in parent table that are referenced by child table cannot be deleted or updated, unless you have cascading actions.
 -- (On delete cascading action)
 -- However values of parent table that are not present in child table can be deleted or updated.
 
--- ===================================================================================== --
-                               --  ON DELETE CASCADE  --
+
+-- ============================================================================================= --
+							  -- ### -- ON DELETE CASCADE -- ### --
 
 ## Delete the table and create again for 'on delete cascade'.
 -- We can not delete parent table directly, first we need to delete child table first.
@@ -1187,16 +1410,28 @@ insert into employee values(4,'Mary', 3);
 
 select * from employee;
 
+SET SQL_SAFE_UPDATES=0; -- OFF
+set sql_safe_updates=1; -- ON
+
+# Q. How to check safe updates is ON or OFF
+show variables like 'sql_safe_updates'; -- ON or OFF
+select @@sql_safe_updates; -- 1 or 0
+
 ## On Delete Cascade is enabled in child table. If we delete any department from parent tbl,
 -- The records from child table will also delete, bcoz of 'ON DELETE CASCADE' effect
 delete from department where dept_id = 1;
 
+select * from department;
+select * from employee;
+
 drop table department; -- parent tbl
+-- Here we can not delete parent table directly. first we should delete child table.
+-- Error Code: 3730. Cannot drop table 'department' referenced by a foreign key constraint 'employee_ibfk_1' on table 'employee'.
 drop table employee; -- child tbl
 
 
--- ===================================================================================== --
-                               --  ON UPDATE CASCADE  --
+-- ============================================================================================= --
+							  -- ### -- ON UPDATE CASCADE -- ### --
 
 ## We have to delete the previous tables first
 -- First delete child (employee) tbl and then delete parent (department) tbl
@@ -1219,13 +1454,27 @@ insert into department values(2,'HR');
 insert into department values(3,'PAYROLL');
 insert into department values(4,'ADMIN');
 
-select * from department;
 
 insert into employee values(1,'Mark', 1);
 insert into employee values(2,'John', 1);
 insert into employee values(3,'Mike', 2);
 insert into employee values(4,'Mary', 3);
 
+select * from department;
+select * from employee;
+
+update department set dept_id = 5 where dept_name = 'IT';
+-- Error Code: 1175. You are using safe update mode and you tried to update a table without a WHERE that uses a KEY column. 
+-- To disable safe mode, toggle the option in Preferences -> SQL Editor and reconnect.
+SET SQL_SAFE_UPDATES=0; -- OFF
+-- Normally set the safe update to 1, because It is MySQL's default setting
+SET SQL_SAFE_UPDATES=1; -- ON
+
+/* On update cascade: 
+When the dept_id set to 5 in department tbl then, 
+automatically employee tbl will be updated.
+employees dept_id will change from 1 to 5 in employee tbl.
+*/
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 			  ######## -- DEFAULT CONSTRAINT IMPLEMENTATION EXAMPLE -- #########
               
@@ -1237,30 +1486,29 @@ insert into employee (emp_id, emp_name, dept_id, salary, gender) values(5, 'Fred
 -- This is default constraint applied to the table and resp. column.                        
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
-select * from employee;
-
-update department set dept_id = 5 where dept_name = 'IT';
--- Error Code: 1175. You are using safe update mode and you tried to update a table without a WHERE that uses a KEY column. 
--- To disable safe mode, toggle the option in Preferences -> SQL Editor and reconnect.
-SET SQL_SAFE_UPDATES=0;
--- Normally set the safe update to 1, because It is MySQL's default setting
-SET SQL_SAFE_UPDATES=1;
-
-/* On update cascade: 
-When the dept_id set to 5 in department tbl then, 
-automatically employee tbl will be updated.
-employees dept_id will change from 1 to 5 in employee tbl.
-*/
-
 -- ============================================================================================= --
 							  -- ### -- CHECK CONSTRAINT -- ### --
 -- ============================================================================================= --
 use constraints_codestudio;
+
+create table employee(
+emp_id int primary key,
+emp_name varchar(20),
+dept_id int,
+foreign key(dept_id) references department(dept_id) on delete cascade on update cascade
+); 
+
+insert into employee values(1,'Mark', 1);
+insert into employee values(2,'John', 1);
+insert into employee values(3,'Mike', 2);
+insert into employee values(4,'Mary', 3);
+
 select * from employee;
 desc employee;
 
 # Add salary column to the employee table
-Alter table employee add salary int check(salary between 5000 and 50000);
+alter table employee add salary int check(salary between 5000 and 50000);
+-- All salaries will be null at first.
 
 # add Mark's salary 10000 - Acceptable
 # add John's salary 3000 - Not Acceptable
@@ -1304,6 +1552,17 @@ delete from orders where orderDate='2023-12-30';
 
 insert into orders (id, orderNumber) values(2,201);
 select * from orders;
+
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+			  ######## -- DEFAULT CONSTRAINT IMPLEMENTATION EXAMPLE -- #########
+              
+## Add emp_status column in employee table
+alter table employee add emp_status varchar(20) default('Not_Joined');                               
+desc employee;
+insert into employee (emp_id, emp_name, dept_id, salary, gender) values(5, 'Fredrick', 3, 14000, 'Male');
+-- Here we have not mentioned the 'emp_status', but bydefault it is added in column.
+-- This is default constraint applied to the table and resp. column.                        
+-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
 -- ============================================================================================= --
 							  -- ### -- AUTO INCREMENT CONSTRAINT -- ### --
@@ -1350,10 +1609,19 @@ insert into employee (name, email) values('Mark Ruffalo','mark@hotmail.com');
 delete from employee where id=2;
 select * from employee;
 -- --------------------------------------------------------------------
-#### We can also set new auto-increment
+#### We can also reset the starting value of auto-increment
+#### We can set any perticular value to id, and from that id the next ids will be auto-incrementedd
 alter table employee auto_increment = 100;
 insert into employee (name, email) values('Steve Angello','steve@hotmail.com');
--- This will start the auto-increment feom 100.
+-- This will start the auto-increment from 100.
+select * from employee;
+
+-- --------------------------------------------------------------------
+# Deleting the values which re inserted in Session 16
+# We can again insert in Session 16
+delete from employee where id = 100;
+delete from employee where id = 104;
+delete from employee where id = 105;
 -- --------------------------------------------------------------------
 -- ============================================================================================= --
 							  -- ### -- LIMIT CLAUSE -- ### --
@@ -1368,6 +1636,8 @@ rather than fetching the whole set in the MySQL database.
   # To fetch 5 records from 3rd row
   select * from employees limit 2,5;
   
+  select max(salary) from employees;
+  select * from employees order by salary desc limit 5;
   
                               
 ################################################################################################
@@ -1384,15 +1654,50 @@ rather than fetching the whole set in the MySQL database.
 */
 
 use project_hr;
+drop view emp_view1;
+
 select * from employees;
 select employee_id, first_name, last_name, salary from employees;
-create view emp_view1 as select employee_id, first_name, last_name, salary from employees;
+-- create view
+create view emp_view1 as (select employee_id, first_name, last_name, salary from employees);
 select * from emp_view1;
--- --------------------------------------------------------------------------------------
+
+drop view emp_view1;
+-- ----------------------------------------------------------------------------------------------
+  
+use testdb_codestudio;
+select * from employee;
+
+create view emp_view as select * from employee;
+select * from emp_view;
+
+insert into emp_view(id, name, email) values (106, "Deepika Shirsath", "deepika@gmail.com");
+select * from emp_view;
+
+-- The changes done in the view also reflected in the table also;
+select * from employee;
+
+drop view emp_view;
 
 								-- ## -- INDEX -- ## --
                                 
+/*
+- SQL indexes are special lookup tables that are used to speed up the process of data retrieval.
+- By adding the indexes in SQL tables, the performance of SQL Queries can be increased.
+  In case of huge records, this indexing plays better role for retrieving the data. 
+- SQL Indexes works simillar to the index of the books.
+- Indexes can be defined when creating a table or added later on after the table has already been created.
+- Indexes are very powerful when it comes to greately improving the performance of MySQL search queries.
+SYNTAX :
+         CREATE INDEX index_name ON table_name(cplumn1, column2);
+         
+*/
+use testdb_codestudio;
+select * from employee;
 
+-- Columns:   id    name     email
+create index emp_index1 on employee(name);
+drop index emp_index1 on employee;
 
 ################################################################################################
 					##  Session-16 : Commit, Autocommit, Rollback  ##

@@ -22,10 +22,15 @@ select * from city;
 select  * from country;
 select * from countrylanguage;
 
+select * from country where Name = "India";
+select * from country where Continent = "Europe";
+
 -- create database -- 
 create database SQL_KrishNaik;
 show databases;
 
+-- ---------------------------------------------------------------------------
+drop database SQL_KrishNaik;
 use SQL_KrishNaik;
 show tables;
 
@@ -43,7 +48,7 @@ select * from customer_info;
 ## insert records in the table
 insert into customer_info(first_name, last_name, salary)     -- no need to specify id bcoz auto_incremented
 values
-('John','Daniel',50000),
+('Stellan','Sarsgaard',50000),
 ('Krish','Naik',60000),
 ('Darius','Bengali',70000),
 ('Chandan','Kumar',40000),
@@ -51,13 +56,29 @@ values
 
 show tables;      -- this will show tables present in the database
 
+ truncate table customer_info; -- -------- This will delete table data BUT table structure remains same.
 -- drop table customer_info;  -- -------- This will delete table structure + data
 
-insert into customer_info(id,first_name,last_name,salary,email) values (5,'Ankit','Sharma',55000,null);
+-- To add the email column to the existing table --
+alter table customer_info add email varchar(50);
+
+-- drop column email --
+alter table customer_info drop column email;
+
+-- to update emails in the table --
+update customer_info set email='stellan.Sarsgaard05@gmail.com' where id=(1);
+update customer_info set email='Krish_Naik@rediffmail.com' where id=(2);
+update customer_info set email='darius.Bengali1985@hotmail.com' where id=(3);
+update customer_info set email='Chandan_Kumar20@gmail.com' where id=(4);
+
+insert into customer_info(id,first_name,last_name,salary,email) values (6,'Tom','Holland',55000,null);
+
+select * from customer_info;
+
+delete from customer_info where id=1;
 
 -- To fetch the records of null --
 select * from customer_info where email is null;
-
 
 -- ----------- To add the dob column to customer_info table -- --------------
 alter table customer_info add dob date; -- -->> date is a data type 
@@ -78,18 +99,6 @@ select * from customer_info;
 -- To delete the records from the table --
 delete from customer_info where id=5;
 
--- To add the email column to the existing table --
-alter table customer_info add email varchar(50);
-
--- drop column email --
-alter table customer_info drop column email;
-
--- to update emails in the table --
-update customer_info set email='John.Daniel05@gmail.com' where id=(1);
-update customer_info set email='Krish_Naik@rediffmail.com' where id=(2);
-update customer_info set email='darius.Bengali1985@hotmail.com' where id=(3);
-update customer_info set email='Chandan_Kumar20@gmail.com' where id=(4);
-
 -- Update the salary of customer --
 update customer_info set salary=(90000) where id=(3);
 
@@ -101,6 +110,8 @@ select last_name, substr(first_name,1,2) from customer_info;
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 -- -- -- -- -- -- -- -- JOINS -- -- -- -- -- -- -- -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+show tables;
 
 create table student(
 studentid int auto_increment,
@@ -114,8 +125,6 @@ primary key(studentid)
 desc student;
 select* from student;
 
-select distinct last_name from student;
-
 insert into student values(1,'Krish','Naik',31),
 (2,'Ram','Sharma',31),
 (3,'Sam','Joe',31);
@@ -123,9 +132,13 @@ insert into student values(1,'Krish','Naik',31),
 insert into student values(4,'Vicky','Shirsath',35),
 (5,'Ishita','Shirsath',16);
 
+select distinct last_name from student;
+
 update student
 set first_name='Vivek'
 where studentid=4;
+
+
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
 create table department(
@@ -135,6 +148,7 @@ foreign key(studentid) references student(studentid)
 );
 
 desc department;
+desc student;
 
 insert into department values(1,'Computer Science'),
 (2,'Electronics'),
@@ -183,19 +197,27 @@ on student.studentid=department.studentid;
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- VIEWS -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
--- Views is a virtual table based on the result set of an SQL query.
--- We can not see that virtual table.
--- If we wish to share a query with someone else & he wants to execute the query
--- What will not work in views?
--- Updatable statements, aggregate fuctions, group by, having, union, left outer join,
--- right outer join, sub-queries. This will not work in Views.
--- Inner join will work in Views
+/* Views is a virtual table based on the result set of an SQL query.
+   We can not see that virtual table.
+   If we wish to share a query with someone else & he wants to execute the query
+   What will not work in views?
+   Updatable statements, aggregate fuctions, group by, having, union, left outer join,
+   right outer join, sub-queries. This will not work in Views.
+   Inner join will work in Views
+   
+   [NOTE:- We should not perform any operations on views, because it will do the changes in table permanently]
+   
+*/
+
+use SQL_KrishNaik;
+
+-- Create a view 'student_info' from table 'student'
 
 create view student_info as
 select first_name,last_name,age from student inner join department
 using (studentid);
 
-select * from student_info;
+select * from student_info; -- 'student_info' is a view created from table 'student'
 
 -- To drop view -- 
 drop view student_info;
@@ -205,16 +227,23 @@ drop view student_info;
 					            ##  9. Stored Procedure  ##
 ################################################################################################
 use SQL_KrishNaik;
-select * from student_info;
+select * from student;
+
+/*
+
+Two types of Stored Procedures :-
+1) Stored Procedures (Without Parameters)
+2) Stored Procedures (With Parameters)(Using Input Parameters - IN)
 
 # Stored Procedures (Without Parameters) :-
 -- -------------------------------------
-/*
+
 -- In left side navigator, right click on 'Stored Procedures' > Select 'Create Stored Procedures'
--- A new tab will open 'new_procedure - Routine', in which write below code -
+-- A new tab will open 'new_procedure - Routine', in which we can write query between BEGIN ... END
 -- [Whichever query we want to execute, write between BEGIN ... END]
 -- Click on Apply > Again Apply > Finish
 
+e.g.
 CREATE PROCEDURE `name_of_procedure` ()
 BEGIN
 select * from student; 
@@ -222,8 +251,13 @@ END
 
 */
 call get_student_data;
--- This command is stored in 'Stored Procedures' folder.
 
+call fetchStudentData;
+-- This command is stored in 'Stored Procedures' folder.
+-- --------------------------------------------------------------
+
+# To delete the stored procedure
+drop procedure fetchStudentData;
 
 # Stored Procedures (With Parameters)(Using Input Parameters - IN) :-
 -- ---------------------------------------------------------------
@@ -232,10 +266,11 @@ select * from student where age=31;
 
 /*
 -- In left side navigator, right click on 'Stored Procedures' > Select 'Create Stored Procedures'
--- A new tab will open 'new_procedure - Routine', in which write below code -
+-- A new tab will open 'new_procedure - Routine', in which we can write query between BEGIN ... END
 -- [Whichever query we want to execute, write between BEGIN ... END]
 -- Click on Apply > Again Apply > Finish
 
+e.g.
 CREATE DEFINER=`root`@`localhost` PROCEDURE `sortByAge`(IN age int)
 BEGIN
 select * from student where student.age=age; -- age is a parameter here

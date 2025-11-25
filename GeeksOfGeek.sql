@@ -2,12 +2,15 @@ create database geeksofgeek;
 -- Instead of CREATE DATABASE we can use CREATE SCHEMA also.
 -- Both commands will do the same work.
 -- SCHEMA is the logical representation of database.
--- We can also use check before creating database, 
--- CREATE DATABASE IF NOT EXISTS databaseName
+-- We can also use check before creating database.
+-- CREATE DATABASE IF NOT EXISTS databaseName.
 
 
 use geeksofgeek;
 show tables;
+
+drop table student;
+drop table StudentCourse;
 
 create table Student(
 roll_no int not null,
