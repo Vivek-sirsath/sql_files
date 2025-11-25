@@ -1,5 +1,12 @@
 use mridul_db;
 
+show tables;
+
+drop table orders;
+drop table persons2;
+drop table persons;
+drop table orders2;
+
 create table orders(
 o_id int,
 orderprice int,
