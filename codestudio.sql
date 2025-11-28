@@ -1,5 +1,10 @@
+create database employees;
+drop database employees;
+
 use employees;
 -- Employees database is already added database, which is nothing but MySQL official website's practice database
+
+create database codestudio;
 
 /*
 Ref: https://www.w3schools.com/sql/sql_datatypes.asp
@@ -117,7 +122,12 @@ select emp_no, first_name from employees;
 -- -------------------------------------------------------- --
 -- Open Command Prompt > Change Directory to folder 'test_db-master'
 -- cd F:\Automation Testing\Automation By Prachi Gupta (Hindi)\SQL Tutorial by Prachi\Databases\test_db-master   <ENTER>
--- mysql -u root -p employees < employees.sql    <ENTER>
+
+-- mysql -u root -p employees < employees.sql    <ENTER> 
+
+-- SYNTAX --
+-- mysql -u root -p DATABASE_NAME < SCRIPTFILE_NAME.sql    <ENTER>
+
 -- # If ERROR comes :- ['mysql' is not recognized as an internal or external command, operable program or batch file]
 -- We'll nedd to set path of our MySQL Server 8.0\bin
 -- F:\Automation Testing\Automation By Prachi Gupta (Hindi)\SQL Tutorial by Prachi\Databases\test_db-master>set path=%PATH%;C:\Program Files\MySQL\MySQL Server 8.0\bin;   <ENTER> 
@@ -137,6 +147,10 @@ select emp_no ENO, first_name FNAME from employees;
 select * from employees where first_name like 'e%';
 select * from employees where first_name like '%en';
 select * from employees where first_name like '_a%';
+select * from employees where first_name like '%nt';
+select * from employees where last_name like '%owski';
+select * from employees where last_name like '%nov';
+select distinct last_name from employees where last_name like '%ov';
 
 select * from salaries;
 select * from salaries where salary > 70000;
@@ -149,6 +163,9 @@ select * from salaries where salary between 70000 and 80000;
 
 -- Use titles table --
 select * from titles;
+select distinct title from titles;
+select distinct emp_no, title from titles;
+
 -- Retrieve Senior Staff and Senior Engineer from titles table --
 select * from titles where title in('Senior Staff', 'Senior Engineer');
 
@@ -177,7 +194,7 @@ https://github.com/prachicodestudio/MYSQL
   - Open Mysql command line client > Enter password - root > We enter into MySql mode
   - mysql>
   - Type in front of mysql> in CLI: 'source' and give the '.sql' file path with file name
-     e.g. source F:\Automation Videos\Automation By Prachi Gupta (Hindi)\MySQL Tutorial\MYSQL-main\mysqlsampledatabase.sql
+     e.g. source H:\Automation Videos\Automation By Prachi Gupta (Hindi)\MySQL Tutorial\MYSQL-main\mysqlsampledatabase.sql
   - Hit Enter > DB will get imported in Workbench
   - Open Workbench > Refresh databases > will show 'classicmodels'
   - Can also type in MySql CLI client - 'show databases' > will show 'classicmodels'
@@ -185,6 +202,7 @@ https://github.com/prachicodestudio/MYSQL
 
 -- ORDER BY clause --
 ## for sorting the rows in the table ##
+show databases;
 
 use classicmodels;
 select * from customers;
@@ -199,6 +217,8 @@ select contactFirstName, contactLastName from customers order by contactFirstNam
 
 -- Can sort by multiple columns --
 select contactLastName LNAME, creditLimit CREDIT from customers order by contactLastName ASC, creditLimit DESC;
+
+select customerNumber, customerName, creditLimit from customers order by creditLimit DESC;
 
 -- Sorting on basis of calculation --
 select * from orderdetails;

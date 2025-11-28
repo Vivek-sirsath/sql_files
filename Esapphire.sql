@@ -21,7 +21,9 @@ CREATE TABLE Employee(
  Country VARCHAR (200)
  ); 
  
- select * from employee;
+select * from employee;
+ 
+drop table employee;
  
 INSERT INTO Employee VALUES 
 (1,'Adam',10000,'USA'),
@@ -33,14 +35,23 @@ INSERT INTO Employee VALUES
 (7,'Steve',60000,'Austrilia'),
 (8,'Henry',80000,'India');
 
+insert into employee values (9, 'Martin', 50000, 'Netherlands');
+
+select name,salary,country from employee where salary=50000;
+
 -- to add column to the existing table --
 alter table employee add Designation varchar(40);
+
+desc employee;
 
 -- to drop the column from existinfg table --
 alter table employee drop column Designation;
 
 -- first set sql safe updates = 0 to enable update 
+-- zero (0) = OFF
+-- one (1) = ON
 SET SQL_SAFE_UPDATES=0;
+
 update employee set Designation = 'Jr. Tester' where id = 1;
 update employee set Designation = 'Sr. Developer' where id = 2;
 update employee set Designation = 'Jr. Tester' where id = 3;
@@ -49,7 +60,9 @@ update employee set Designation = 'Jr. Tester' where id = 5;
 update employee set Designation = 'Jr. Developer' where id = 6;
 update employee set Designation = 'Sr. Tester' where id = 7;
 update employee set Designation = 'Project Manager' where id = 8;
+update employee set Designation = 'Associate Consultant' where id = 9;
 
+select * from employee;
 
 -- at runtime we can change the designation of any employee using id or name attribute --
 update employee set Designation = 'Sr. Developer' where id = 5;
@@ -66,6 +79,7 @@ update employee
 set Salary=30000
 where Name = 'John';
 
+SET SQL_SAFE_UPDATES=1;
 
 -- to delete the records from the table --
 delete from employee where id=6;
@@ -74,6 +88,8 @@ delete from employee where id=6;
 
 -- to add the column DOJ (Date of Joining) --
 alter table employee add DOJ date;
+
+desc employee;
 
 -- to update the employee DOJ --
 update employee set DOJ = '2022-12-07'
@@ -98,6 +114,8 @@ select * from employee;
 -- LOGICAL OPERATOR -- -- LOGICAL OPERATOR -- -- LOGICAL OPERATOR --
 -- and --
 select * from employee where ID=1 & Name='Adam';
+select * from employee where ID=4 & Name='Martin';
+select id, name, country from employee where ID=4 & Name='Martin';
 
 -- NOT IN --
 SELECT * FROM Employee WHERE Name Not IN ('John', 'Nick', 'Steve','Adam');
